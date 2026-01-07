@@ -126,7 +126,7 @@ const firebaseService = {
       }));
       
       const updateResponse = await fetch(
-        `${invite.docName}?updateMask.fieldPaths=responses`,
+  `https://firestore.googleapis.com/v1/${invite.docName}?updateMask.fieldPaths=responses`,
         {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
