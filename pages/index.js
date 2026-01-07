@@ -295,11 +295,14 @@ export default function Home() {
   };
 
   const viewDashboard = async () => {
-    setLoading(true);
-    await loadInvite(inviteId);
-    setScreen('dashboard');
-    setLoading(false);
-  };
+  setLoading(true);
+  if (typeof window !== 'undefined') {
+    window.history.pushState({}, '', `?invite=${inviteId}&view=dashboard`);
+  }
+  await loadInvite(inviteId);
+  setScreen('dashboard');
+  setLoading(false);
+};
 
   const refreshDashboard = async () => {
     setLoading(true);
