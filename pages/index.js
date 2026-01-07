@@ -186,16 +186,18 @@ export default function Home() {
   }
 }, []);
 
-  const loadInvite = async (id) => {
-    setLoading(true);
-    const data = await firebaseService.getInvite(id);
-    if (data) {
-      setInvite(data);
-      setInviteId(id);
+  const loadInvite = async (id, skipScreenChange = false) => {
+  setLoading(true);
+  const data = await firebaseService.getInvite(id);
+  if (data) {
+    setInvite(data);
+    setInviteId(id);
+    if (!skipScreenChange) {
       setScreen('rsvp');
     }
-    setLoading(false);
-  };
+  }
+  setLoading(false);
+};
 
   const addOption = () => {
     if (currentOption.name && currentOption.date && currentOption.time) {
@@ -308,10 +310,10 @@ export default function Home() {
 };
 
   const refreshDashboard = async () => {
-    setLoading(true);
-    await loadInvite(inviteId);
-    setLoading(false);
-  };
+  setLoading(true);
+  await loadInvite(inviteId, true);
+  setLoading(false);
+};
 
   // Splash Screen
   if (screen === 'splash') {
