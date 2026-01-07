@@ -174,14 +174,17 @@ export default function Home() {
   }, [screen]);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const id = params.get('invite');
-      if (id) {
-        loadInvite(id);
-      }
+  if (typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('invite');
+    const view = params.get('view');
+    if (id && view === 'dashboard') {
+      loadInvite(id).then(() => setScreen('dashboard'));
+    } else if (id) {
+      loadInvite(id);
     }
-  }, []);
+  }
+}, []);
 
   const loadInvite = async (id) => {
     setLoading(true);
