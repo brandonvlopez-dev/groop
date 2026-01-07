@@ -749,12 +749,17 @@ export default function Home() {
             })}
           </div>
 
-          <buttononClick={() => setScreen('share')}
-        className="w-full mt-6 py-4 rounded-full font-medium"
-        style={{ backgroundColor: '#5C5F52', color: 'white' }}
-      >
-        Back to Share
-      </button>
-    </div>
-  </div>
-);
+          <button
+            onClick={() => setScreen('share')}
+            className="w-full mt-6 py-4 rounded-full font-medium"
+            style={{ backgroundColor: '#5C5F52', color: 'white' }}
+          >
+            Back to Share
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+}
