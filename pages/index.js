@@ -528,13 +528,22 @@ export default function Home() {
             </p>
           </div>
 
-          <button
-            onClick={viewDashboard}
-            className="w-full mt-4 py-3 rounded-full font-medium"
-            style={{ backgroundColor: '#5C5F52', color: 'white' }}
-          >
-            View Dashboard
-          </button>
+          <div className="flex gap-3 mt-4">
+  <button
+    onClick={() => setScreen('create')}
+    className="flex-1 py-3 rounded-full font-medium"
+    style={{ backgroundColor: '#E5B88A' }}
+  >
+    Edit
+  </button>
+  <button
+    onClick={viewDashboard}
+    className="flex-1 py-3 rounded-full font-medium"
+    style={{ backgroundColor: '#5C5F52', color: 'white' }}
+  >
+    View Dashboard
+  </button>
+</div>
         </div>
       </div>
     );
