@@ -95,7 +95,7 @@ const firebaseService = {
   finalizedOption: fields.finalizedOption?.integerValue ? parseInt(fields.finalizedOption.integerValue) : null,
   docName: invite.name
 };
-      };
+    
     } catch (error) {
       console.error('Error getting invite:', error);
       return null;
