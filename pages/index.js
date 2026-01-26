@@ -165,7 +165,29 @@ export default function Home() {
   const [rsvpForm, setRsvpForm] = useState({ name: '', phone: '' });
   const [existingRsvp, setExistingRsvp] = useState(null);
   const [loading, setLoading] = useState(false);
+  
+export default function Home() {
+  const [screen, setScreen] = useState('splash');
+  const [inviteData, setInviteData] = useState({
+    title: '',
+    options: [],
+    hasGuestLimit: false,
+    guestLimit: 4
+  });
+  const [currentOption, setCurrentOption] = useState({
+    name: '',
+    date: '',
+    time: ''
+  });
+  const [inviteId, setInviteId] = useState(null);
+  const [invite, setInvite] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [rsvpForm, setRsvpForm] = useState({ name: '', phone: '' });
+  const [existingRsvp, setExistingRsvp] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [finalizedOption, setFinalizedOption] = useState(null);
 
+  
   useEffect(() => {
     if (screen === 'splash') {
       const timer = setTimeout(() => setScreen('create'), 2000);
@@ -313,6 +335,57 @@ export default function Home() {
   setLoading(true);
   await loadInvite(inviteId, true);
   setLoading(false);
+};
+
+  const finalizeEvent = async (optionIndex) => {
+  if (!invite) return;
+  
+  setLoading(true);
+  try {
+    const response = await fetch(
+      `https://firestore.googleapis.com/v1/${invite.docName}?updateMask.fieldPaths=finalizedOption`,
+      {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fields: {
+            finalizedOption: { integerValue: optionIndex.toString() }
+          }
+        })
+      }
+    );
+    
+    if (response.ok) {
+      await loadInvite(inviteId, true);
+      setFinalizedOption(optionIndex);
+      alert('Event finalized! Share the link with your group.');
+    }
+  } catch (error) {
+    console.error('Error finalizing:', error);
+    alert('Failed to finalize event');
+  }
+  setLoading(false);
+};
+
+const generateCalendarLink = (option) => {
+  const title = encodeURIComponent(invite.title);
+  const location = encodeURIComponent(option.name);
+  const details = encodeURIComponent(`Event organized via Groop`);
+  
+  // Create start and end times
+  const [year, month, day] = option.date.split('-');
+  const [hours, minutes] = option.time.split(':');
+  const startDate = new Date(year, month - 1, day, hours, minutes);
+  const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000); // +2 hours
+  
+  const formatDate = (date) => {
+    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  };
+  
+  const start = formatDate(startDate);
+  const end = formatDate(endDate);
+  
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;
 };
 
  // Splash Screen
