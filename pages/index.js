@@ -320,9 +320,9 @@ const [loadInviteId, setLoadInviteId] = useState('');
   setLoading(false);
 };
 
-  const finalizeEvent = async (optionIndex) => {
+const finalizeEvent = async (optionIndex) => {
   if (!invite) return;
-  
+
   setLoading(true);
   try {
     const response = await fetch(
@@ -337,7 +337,7 @@ const [loadInviteId, setLoadInviteId] = useState('');
         })
       }
     );
-    
+
     if (response.ok) {
       await loadInvite(inviteId, true);
       setFinalizedOption(optionIndex);
