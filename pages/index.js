@@ -315,27 +315,98 @@ export default function Home() {
   setLoading(false);
 };
 
-  // Splash Screen
-  if (screen === 'splash') {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#C4BDAA' }}>
-        <div className="relative" style={{ 
-          width: '280px', 
-          height: '560px', 
-          backgroundColor: '#E5B88A',
-          borderRadius: '140px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '16px'
-        }}>
-          <h1 className="text-white text-7xl font-light tracking-tight">groop</h1>
-          <p className="text-white text-lg">Let's get together.</p>
-        </div>
+ // Splash Screen
+if (screen === 'splash') {
+  const [showLoadInvite, setShowLoadInvite] = useState(false);
+  const [loadInviteId, setLoadInviteId] = useState('');
+
+  const handleLoadInvite = async () => {
+    if (loadInviteId.trim()) {
+      // Extract invite ID from full URL or use as-is
+      let id = loadInviteId.trim();
+      if (id.includes('invite=')) {
+        const match = id.match(/invite=([^&]+)/);
+        if (match) id = match[1];
+      }
+      
+      setLoading(true);
+      const data = await firebaseService.getInvite(id);
+      if (data) {
+        setInvite(data);
+        setInviteId(id);
+        setInviteData({
+          title: data.title,
+          options: data.options,
+          hasGuestLimit: data.hasGuestLimit,
+          guestLimit: data.guestLimit
+        });
+        if (typeof window !== 'undefined') {
+          window.history.pushState({}, '', `?invite=${id}&view=dashboard`);
+        }
+        setScreen('dashboard');
+      } else {
+        alert('Invite not found. Please check the ID or link.');
+      }
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-6" style={{ backgroundColor: '#C4BDAA' }}>
+      <div className="relative" style={{ 
+        width: '280px', 
+        backgroundColor: '#E5B88A',
+        borderRadius: '140px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '24px',
+        padding: '60px 40px'
+      }}>
+        <h1 className="text-white text-7xl font-light tracking-tight">groop</h1>
+        <p className="text-white text-lg text-center">Let's get together.</p>
+        
+        {!showLoadInvite ? (
+          <button
+            onClick={() => setShowLoadInvite(true)}
+            className="mt-4 px-6 py-3 rounded-full font-medium"
+            style={{ backgroundColor: '#F4E96D' }}
+          >
+            Load My Invite
+          </button>
+        ) : (
+          <div className="w-full mt-4 space-y-3">
+            <input
+              type="text"
+              placeholder="Paste invite link or ID"
+              value={loadInviteId}
+              onChange={(e) => setLoadInviteId(e.target.value)}
+              className="w-full px-4 py-3 rounded-full text-sm font-medium outline-none text-center"
+              style={{ backgroundColor: '#F5F1E8', color: '#3D3D3D' }}
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowLoadInvite(false)}
+                className="flex-1 py-2 rounded-full text-sm font-medium"
+                style={{ backgroundColor: '#D9D9D9' }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleLoadInvite}
+                className="flex-1 py-2 rounded-full text-sm font-medium"
+                style={{ backgroundColor: '#F4E96D' }}
+              >
+                Load
+              </button>
+            </div>
+          </div>
+        )}
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   // Loading overlay
   if (loading && screen !== 'splash') {
