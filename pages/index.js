@@ -948,7 +948,7 @@ if (screen === 'splash') {
         )}
         
         {isFinalized && (
-          
+          <a
             href={generateCalendarLink(option)}
             target="_blank"
             rel="noopener noreferrer"
