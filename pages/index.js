@@ -77,22 +77,24 @@ const firebaseService = {
       
       const fields = invite.fields;
       return {
-        id: fields.id?.stringValue,
-        title: fields.title?.stringValue,
-        options: fields.options?.arrayValue?.values?.map(v => ({
-          name: v.mapValue?.fields?.name?.stringValue,
-          date: v.mapValue?.fields?.date?.stringValue,
-          time: v.mapValue?.fields?.time?.stringValue
-        })) || [],
-        hasGuestLimit: fields.hasGuestLimit?.booleanValue || false,
-        guestLimit: parseInt(fields.guestLimit?.integerValue || '4'),
-        responses: fields.responses?.arrayValue?.values?.map(v => ({
-          name: v.mapValue?.fields?.name?.stringValue,
-          phone: v.mapValue?.fields?.phone?.stringValue,
-          optionIndex: parseInt(v.mapValue?.fields?.optionIndex?.integerValue || '0'),
-          timestamp: parseInt(v.mapValue?.fields?.timestamp?.integerValue || '0')
-        })) || [],
-        docName: invite.name
+  id: fields.id?.stringValue,
+  title: fields.title?.stringValue,
+  options: fields.options?.arrayValue?.values?.map(v => ({
+    name: v.mapValue?.fields?.name?.stringValue,
+    date: v.mapValue?.fields?.date?.stringValue,
+    time: v.mapValue?.fields?.time?.stringValue
+  })) || [],
+  hasGuestLimit: fields.hasGuestLimit?.booleanValue || false,
+  guestLimit: parseInt(fields.guestLimit?.integerValue || '4'),
+  responses: fields.responses?.arrayValue?.values?.map(v => ({
+    name: v.mapValue?.fields?.name?.stringValue,
+    phone: v.mapValue?.fields?.phone?.stringValue,
+    optionIndex: parseInt(v.mapValue?.fields?.optionIndex?.integerValue || '0'),
+    timestamp: parseInt(v.mapValue?.fields?.timestamp?.integerValue || '0')
+  })) || [],
+  finalizedOption: fields.finalizedOption?.integerValue ? parseInt(fields.finalizedOption.integerValue) : null,
+  docName: invite.name
+};
       };
     } catch (error) {
       console.error('Error getting invite:', error);
@@ -867,74 +869,111 @@ if (screen === 'splash') {
 </div>
 
           <div className="space-y-3">
-            {invite.options.map((option, i) => {
-              const responses = getOptionResponses(i);
-              const hasResponses = responses.length > 0;
-              
-              return (
-                <div
-                  key={i}
-                  className="p-6 rounded-3xl relative"
-                  style={{ backgroundColor: hasResponses ? '#C4BDAA' : '#D9D9D9' }}
-                >
-                  <h3 className="text-2xl font-bold mb-2" style={{ color: '#3D3D3D' }}>
-                    {option.name}
-                  </h3>
-                  
-                  {invite.hasGuestLimit && (
-                    <div className="flex gap-1 mb-2">
-                      {responses.map((response, idx) => (
-                        <div
-                          key={idx}
-                          className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
-                          style={{ 
-                            backgroundColor: '#F4E96D',
-                            color: '#3D3D3D'
-                          }}
-                          title={`${response.name} - ${response.phone}`}
-                        >
-                          {getInitials(response.name)}
-                        </div>
-                      ))}
-                      {[...Array(Math.max(0, invite.guestLimit - responses.length))].map((_, idx) => (
-                        <div
-                          key={`empty-${idx}`}
-                          className="w-8 h-8 rounded-full"
-                          style={{ backgroundColor: 'rgba(255,255,255,0.3)' }}
-                        />
-                      ))}
-                    </div>
-                  )}
-                  
-                  <div className="flex justify-between items-center">
-                    <span className="text-lg" style={{ color: '#3D3D3D' }}>
-                      {new Date(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
-                    </span>
-                    <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
-                      {option.time}
-                    </span>
-                  </div>
+  {invite.options.map((option, i) => {
+    const responses = getOptionResponses(i);
+    const hasResponses = responses.length > 0;
+    const isFinalized = invite.finalizedOption === i;
+    
+    return (
+      <div
+        key={i}
+        className="p-6 rounded-3xl relative"
+        style={{ 
+          backgroundColor: isFinalized ? '#C4BDAA' : hasResponses ? '#C4BDAA' : '#D9D9D9',
+          border: isFinalized ? '3px solid #F4E96D' : 'none'
+        }}
+      >
+        {isFinalized && (
+          <div className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold" style={{ backgroundColor: '#F4E96D' }}>
+            FINAL
+          </div>
+        )}
+        
+        <h3 className="text-2xl font-bold mb-2" style={{ color: '#3D3D3D' }}>
+          {option.name}
+        </h3>
+        
+        {invite.hasGuestLimit && (
+          <div className="flex gap-1 mb-2">
+            {responses.map((response, idx) => (
+              <div
+                key={idx}
+                className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                style={{ 
+                  backgroundColor: '#F4E96D',
+                  color: '#3D3D3D'
+                }}
+                title={`${response.name} - ${response.phone}`}
+              >
+                {getInitials(response.name)}
+              </div>
+            ))}
+            {[...Array(Math.max(0, invite.guestLimit - responses.length))].map((_, idx) => (
+              <div
+                key={`empty-${idx}`}
+                className="w-8 h-8 rounded-full"
+                style={{ backgroundColor: 'rgba(255,255,255,0.3)' }}
+              />
+            ))}
+          </div>
+        )}
+        
+        <div className="flex justify-between items-center">
+          <span className="text-lg" style={{ color: '#3D3D3D' }}>
+            {new Date(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+          </span>
+          <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
+            {option.time}
+          </span>
+        </div>
 
-                  {!invite.hasGuestLimit && responses.length > 0 && (
-                    <div className="mt-3 pt-3 border-t border-gray-400">
-                      <p className="text-sm font-medium mb-2">RSVPs:</p>
-                      <div className="flex flex-wrap gap-2">
-                        {responses.map((response, idx) => (
-                          <div
-                            key={idx}
-                            className="px-3 py-1 rounded-full text-xs"
-                            style={{ backgroundColor: '#F4E96D' }}
-                            title={response.phone}
-                          >
-                            {response.name}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+        {!invite.hasGuestLimit && responses.length > 0 && (
+          <div className="mt-3 pt-3 border-t border-gray-400">
+            <p className="text-sm font-medium mb-2">RSVPs:</p>
+            <div className="flex flex-wrap gap-2">
+              {responses.map((response, idx) => (
+                <div
+                  key={idx}
+                  className="px-3 py-1 rounded-full text-xs"
+                  style={{ backgroundColor: '#F4E96D' }}
+                  title={response.phone}
+                >
+                  {response.name}
                 </div>
-              );
-            })}
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {!isFinalized && responses.length > 0 && invite.finalizedOption === null && (
+          <button
+            onClick={() => {
+              if (window.confirm(`Finalize "${option.name}"? This will set it as the final event.`)) {
+                finalizeEvent(i);
+              }
+            }}
+            className="w-full mt-3 py-2 rounded-full text-sm font-medium"
+            style={{ backgroundColor: '#F4E96D' }}
+          >
+            Finalize This Option
+          </button>
+        )}
+        
+        {isFinalized && (
+          
+            href={generateCalendarLink(option)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full mt-3 py-2 rounded-full text-sm font-medium text-center"
+            style={{ backgroundColor: '#F4E96D' }}
+          >
+            Add to Google Calendar
+          </a>
+        )}
+      </div>
+    );
+  })}
+</div>
           </div>
 
           <button
