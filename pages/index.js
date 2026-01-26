@@ -367,24 +367,40 @@ export default function Home() {
 
           <div className="space-y-4">
             <div className="bg-white rounded-3xl p-6">
-              <h3 className="font-bold text-lg mb-3">Date + Time</h3>
-              <div className="flex gap-3">
-                <input
-                  type="date"
-                  value={currentOption.date}
-                  onChange={(e) => setCurrentOption({ ...currentOption, date: e.target.value })}
-                  className="flex-1 px-4 py-3 rounded-full text-sm font-medium outline-none"
-                  style={{ backgroundColor: '#E5B88A' }}
-                />
-                <input
-                  type="time"
-                  value={currentOption.time}
-                  onChange={(e) => setCurrentOption({ ...currentOption, time: e.target.value })}
-                  className="flex-1 px-4 py-3 rounded-full text-sm font-medium outline-none"
-                  style={{ backgroundColor: '#E5B88A' }}
-                />
-              </div>
-            </div>
+  <h3 className="font-bold text-lg mb-3">Date + Time</h3>
+  <div className="flex gap-3">
+    <div className="flex-1 relative">
+      <input
+        type="date"
+        value={currentOption.date}
+        onChange={(e) => setCurrentOption({ ...currentOption, date: e.target.value })}
+        className="w-full px-4 py-3 rounded-full text-sm font-medium outline-none"
+        style={{ backgroundColor: '#E5B88A' }}
+        placeholder="Select date"
+      />
+      {!currentOption.date && (
+        <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-sm pointer-events-none" style={{ color: '#666' }}>
+          Select date
+        </span>
+      )}
+    </div>
+    <div className="flex-1 relative">
+      <input
+        type="time"
+        value={currentOption.time}
+        onChange={(e) => setCurrentOption({ ...currentOption, time: e.target.value })}
+        className="w-full px-4 py-3 rounded-full text-sm font-medium outline-none"
+        style={{ backgroundColor: '#E5B88A' }}
+        placeholder="Select time"
+      />
+      {!currentOption.time && (
+        <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-sm pointer-events-none" style={{ color: '#666' }}>
+          Select time
+        </span>
+      )}
+    </div>
+  </div>
+</div>
 
             <div className="rounded-3xl p-6" style={{ backgroundColor: '#D9D9D9' }}>
               <h3 className="font-bold text-lg mb-3">Location</h3>
