@@ -430,14 +430,24 @@ export default function Home() {
             </div>
 
             {inviteData.options.length > 0 && (
-              <div className="flex gap-2 flex-wrap">
-                {inviteData.options.map((opt, i) => (
-                  <div key={i} className="px-4 py-2 rounded-full text-sm" style={{ backgroundColor: '#D9D9D9' }}>
-                    {opt.name}
-                  </div>
-                ))}
-              </div>
-            )}
+  <div className="flex gap-2 flex-wrap">
+    {inviteData.options.map((opt, i) => (
+      <button
+        key={i}
+        onClick={() => {
+          setCurrentOption(opt);
+          const newOptions = inviteData.options.filter((_, idx) => idx !== i);
+          setInviteData({ ...inviteData, options: newOptions });
+        }}
+        className="px-4 py-2 rounded-full text-sm flex items-center gap-2 hover:opacity-80"
+        style={{ backgroundColor: '#D9D9D9' }}
+      >
+        {opt.name}
+        <X size={16} />
+      </button>
+    ))}
+  </div>
+)}
           </div>
 
           <div className="fixed bottom-0 left-0 right-0 p-6 flex gap-3" style={{ backgroundColor: '#5C5F52' }}>
