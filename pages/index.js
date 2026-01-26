@@ -704,6 +704,14 @@ if (screen === 'splash') {
             The options
           </h2>
 
+{invite.finalizedOption !== null && (
+  <div className="mb-4 p-4 rounded-2xl" style={{ backgroundColor: '#F4E96D' }}>
+    <p className="text-sm font-bold mb-1">Event Finalized!</p>
+    <p className="text-sm">The organizer has selected: <strong>{invite.options[invite.finalizedOption].name}</strong></p>
+  </div>
+)}
+
+
           {existingRsvp && (
             <div className="mb-4 p-4 bg-yellow-100 rounded-2xl">
               <p className="text-sm font-medium">You've already RSVPed! You can change your selection below.</p>
