@@ -960,7 +960,7 @@ if (screen === 'splash') {
         )}
       </div>
     );
-  }}
+  })}
 </div>
           </div>
 
