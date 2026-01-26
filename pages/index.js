@@ -147,26 +147,6 @@ const firebaseService = {
     }
   }
 };
-
-export default function Home() {
-  const [screen, setScreen] = useState('splash');
-  const [inviteData, setInviteData] = useState({
-    title: '',
-    options: [],
-    hasGuestLimit: false,
-    guestLimit: 4
-  });
-  const [currentOption, setCurrentOption] = useState({
-    name: '',
-    date: '',
-    time: ''
-  });
-  const [inviteId, setInviteId] = useState(null);
-  const [invite, setInvite] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [rsvpForm, setRsvpForm] = useState({ name: '', phone: '' });
-  const [existingRsvp, setExistingRsvp] = useState(null);
-  const [loading, setLoading] = useState(false);
   
 export default function Home() {
   const [screen, setScreen] = useState('splash');
