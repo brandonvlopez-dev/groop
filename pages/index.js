@@ -674,17 +674,34 @@ export default function Home() {
       <div className="min-h-screen" style={{ backgroundColor: '#E8E6E1' }}>
         <div className="max-w-md mx-auto p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-5xl font-bold" style={{ color: '#3D3D3D' }}>
-              {isComplete ? "Let's go!" : totalResponses === 0 ? "Waiting..." : "Groops"}
-            </h2>
-            <button
-              onClick={refreshDashboard}
-              className="px-4 py-2 rounded-full text-sm font-medium"
-              style={{ backgroundColor: '#E5B88A' }}
-            >
-              Refresh
-            </button>
-          </div>
+  <h2 className="text-5xl font-bold" style={{ color: '#3D3D3D' }}>
+    {isComplete ? "Let's go!" : totalResponses === 0 ? "Waiting..." : "Groops"}
+  </h2>
+  <div className="flex gap-2">
+    <button
+      onClick={() => {
+        setInviteData({
+          title: invite.title,
+          options: invite.options,
+          hasGuestLimit: invite.hasGuestLimit,
+          guestLimit: invite.guestLimit
+        });
+        setScreen('create');
+      }}
+      className="px-4 py-2 rounded-full text-sm font-medium"
+      style={{ backgroundColor: '#F4E96D' }}
+    >
+      Edit
+    </button>
+    <button
+      onClick={refreshDashboard}
+      className="px-4 py-2 rounded-full text-sm font-medium"
+      style={{ backgroundColor: '#E5B88A' }}
+    >
+      Refresh
+    </button>
+  </div>
+</div>
 
           <div className="space-y-3">
             {invite.options.map((option, i) => {
