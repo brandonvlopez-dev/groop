@@ -290,6 +290,12 @@ const formatTime = (time24) => {
   return `${hour12}:${minutes} ${ampm}`;
 };
 
+  const parseDate = (dateString) => {
+  // Parse as local date to avoid timezone issues
+  const [year, month, day] = dateString.split('-');
+  return new Date(year, month - 1, day);
+};
+
   const getTotalResponses = () => {
     return invite?.responses?.length || 0;
   };
@@ -324,7 +330,7 @@ const shareFinalPlan = () => {
   if (!invite || invite.finalizedOption === null) return;
   
   const finalOption = invite.options[invite.finalizedOption];
-  const dateStr = new Date(finalOption.date).toLocaleDateString('en-US', { 
+  const dateStr = parseDate(finalOption.date).toLocaleDateString('en-US', { 
     weekday: 'long', 
     month: 'long', 
     day: 'numeric' 
@@ -402,7 +408,7 @@ const generateCalendarLink = (option) => {
   // Create start and end times
   const [year, month, day] = option.date.split('-');
   const [hours, minutes] = option.time.split(':');
-  const startDate = new Date(year, month - 1, day, hours, minutes);
+  const startDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hours), parseInt(minutes));
   const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000); // +2 hours
   
   const formatDate = (date) => {
@@ -681,7 +687,7 @@ if (screen === 'home') {
                 </h3>
                 <div className="flex justify-between items-center">
                   <span className="text-lg" style={{ color: '#3D3D3D' }}>
-                    {new Date(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+                    {parseDate(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
                   </span>
                   <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
                     {formatTime(option.time)}
@@ -814,7 +820,7 @@ if (screen === 'rsvp' && invite) {
                 
                 <div className="flex justify-between items-center">
                   <span className="text-lg" style={{ color: '#3D3D3D' }}>
-                    {new Date(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+                    {parseDate(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
                   </span>
                   <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
                     {formatTime(option.time)}
@@ -1016,7 +1022,7 @@ if (screen === 'dashboard' && invite) {
                 
                 <div className="flex justify-between items-center">
                   <span className="text-lg" style={{ color: '#3D3D3D' }}>
-                    {new Date(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+                    {parseDate(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
                   </span>
                   <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
                     {formatTime(option.time)}
