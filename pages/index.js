@@ -1047,12 +1047,7 @@ if (screen === 'confirmation') {
   >
     Home
   </button>
-  <button
-    onClick={() => setScreen('share')}
-    className="flex-1 py-4 rounded-full font-medium"
-    style={{ backgroundColor: '#5C5F52', color: 'white' }}
-  >
-
+ {/* Can't Make It section - MOVED OUTSIDE */}
 {invite.responses.filter(r => r.optionIndex === -1).length > 0 && (
   <div className="mt-4 p-4 rounded-2xl" style={{ backgroundColor: '#FFE5E5' }}>
     <p className="text-sm font-bold mb-2" style={{ color: '#3D3D3D' }}>Can't Make It:</p>
@@ -1071,9 +1066,22 @@ if (screen === 'confirmation') {
   </div>
 )}
 
-
+<div className="flex gap-3 mt-6">
+  <button
+    onClick={() => setScreen('home')}
+    className="flex-1 py-4 rounded-full font-medium"
+    style={{ backgroundColor: '#E5B88A' }}
+  >
+    Home
+  </button>
+  <button
+    onClick={() => setScreen('share')}
+    className="flex-1 py-4 rounded-full font-medium"
+    style={{ backgroundColor: '#5C5F52', color: 'white' }}
+  >
     Back to Share
   </button>
+</div>
 </div>
         </div>
       </div>
