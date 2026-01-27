@@ -875,7 +875,7 @@ if (screen === 'home') {
 </div>
 <div className="mb-6 px-4 py-2 bg-white rounded-full text-center">
   <span className="text-sm" style={{ color: '#666' }}>Code: </span>
-  <span className="font-bold text-lg" style={{ color: '#3D3D3D' }}>{inviteId?.toUpperCase()}</span>
+<span className="font-bold text-lg" style={{ color: '#3D3D3D' }}>{inviteId}</span>
 </div>
 
 <div className="space-y-3">
