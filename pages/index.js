@@ -962,7 +962,6 @@ if (screen === 'splash') {
     );
   })}
 </div>
-          </div>
 
           <button
             onClick={() => setScreen('share')}
