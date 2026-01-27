@@ -673,11 +673,16 @@ if (screen === 'home') {
     return (
       <div className="min-h-screen" style={{ backgroundColor: '#E8E6E1' }}>
         <div className="max-w-md mx-auto p-6 pb-32">
-          <h2 className="text-4xl font-bold mb-6" style={{ color: '#3D3D3D' }}>
-            The {inviteData.title} options
-          </h2>
+         <h2 className="text-4xl font-bold mb-2" style={{ color: '#3D3D3D' }}>
+  The {inviteData.title} options
+</h2>
+<div className="mb-6 p-4 bg-white rounded-2xl text-center">
+  <p className="text-sm mb-1" style={{ color: '#666' }}>Your invite code:</p>
+  <p className="text-3xl font-bold tracking-wider" style={{ color: '#3D3D3D' }}>{inviteId?.toUpperCase()}</p>
+  <p className="text-xs mt-1" style={{ color: '#666' }}>Share this code or the link below</p>
+</div>
 
-          <div className="space-y-3 mb-8">
+<div className="space-y-3 mb-8">
             {inviteData.options.map((option, i) => (
               <div
                 key={i}
