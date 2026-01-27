@@ -1061,27 +1061,29 @@ if (screen === 'dashboard' && invite) {
                   </button>
                 )}
                 
-              {isFinalized && (
-                  <a
-                    
-                      href={generateCalendarLink(option)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block w-full mt-3 py-2 rounded-full text-sm font-medium text-center"
-                      style={{ backgroundColor: '#F4E96D' }}
-                    >
-                      Add to Google Calendar
-                    </a>
-                    <button
-                      onClick={shareFinalPlan}
-                      className="w-full mt-2 py-2 rounded-full text-sm font-medium flex items-center justify-center gap-2"
-                      style={{ backgroundColor: '#E5B88A' }}
-                    >
-                      <MessageSquare size={16} />
-                      Share Plan with Group
-                    </button>
-                  </>
+             {isFinalized && (
+                  
+                    href={generateCalendarLink(option)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full mt-3 py-2 rounded-full text-sm font-medium text-center"
+                    style={{ backgroundColor: '#F4E96D' }}
+                  >
+                    Add to Google Calendar
+                  </a>
                 )}
+                
+                {isFinalized && (
+                  <button
+                    onClick={shareFinalPlan}
+                    className="w-full mt-2 py-2 rounded-full text-sm font-medium flex items-center justify-center gap-2"
+                    style={{ backgroundColor: '#E5B88A' }}
+                  >
+                    <MessageSquare size={16} />
+                    Share Plan with Group
+                  </button>
+                )}
+      
                   
               </div>
             );
