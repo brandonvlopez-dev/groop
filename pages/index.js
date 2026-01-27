@@ -983,23 +983,23 @@ if (screen === 'confirmation') {
           </span>
         </div>
 
-        {!invite.hasGuestLimit && responses.length > 0 && (
-          <div className="mt-3 pt-3 border-t border-gray-400">
-            <p className="text-sm font-medium mb-2">RSVPs:</p>
-            <div className="flex flex-wrap gap-2">
-              {responses.map((response, idx) => (
-                <div
-                  key={idx}
-                  className="px-3 py-1 rounded-full text-xs"
-                  style={{ backgroundColor: '#F4E96D' }}
-                  title={response.phone}
-                >
-                  {response.name}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+       {!invite.hasGuestLimit && responses.length > 0 && (
+  <div className="mt-3 pt-3 border-t border-gray-400">
+    <p className="text-sm font-medium mb-2">RSVPs:</p>
+    <div className="flex flex-wrap gap-2">
+      {responses.map((response, idx) => (
+        <div
+          key={idx}
+          className="px-3 py-1 rounded-full text-xs"
+          style={{ backgroundColor: '#F4E96D' }}
+          title={response.phone}
+        >
+          {response.name}
+        </div>
+      ))}
+    </div>
+  </div>
+)}
         
         {!isFinalized && responses.length > 0 && invite.finalizedOption === null && (
           <button
@@ -1044,6 +1044,26 @@ if (screen === 'confirmation') {
     className="flex-1 py-4 rounded-full font-medium"
     style={{ backgroundColor: '#5C5F52', color: 'white' }}
   >
+
+{invite.responses.filter(r => r.optionIndex === -1).length > 0 && (
+  <div className="mt-4 p-4 rounded-2xl" style={{ backgroundColor: '#FFE5E5' }}>
+    <p className="text-sm font-bold mb-2" style={{ color: '#3D3D3D' }}>Can't Make It:</p>
+    <div className="flex flex-wrap gap-2">
+      {invite.responses.filter(r => r.optionIndex === -1).map((response, idx) => (
+        <div
+          key={idx}
+          className="px-3 py-1 rounded-full text-xs"
+          style={{ backgroundColor: '#FFB3B3', color: '#3D3D3D' }}
+          title={response.phone}
+        >
+          {response.name}
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
+
     Back to Share
   </button>
 </div>
