@@ -748,9 +748,13 @@ if (screen === 'rsvp' && invite) {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#E8E6E1' }}>
       <div className="max-w-md mx-auto p-6 pb-32">
-        <h2 className="text-4xl font-bold mb-6" style={{ color: '#3D3D3D' }}>
-          The options
+        <h2 className="text-4xl font-bold mb-2" style={{ color: '#3D3D3D' }}>
+          {invite.title}
         </h2>
+        
+        <div className="mb-6 p-4 rounded-2xl" style={{ backgroundColor: '#F4E96D' }}>
+          <p className="text-sm font-bold" style={{ color: '#3D3D3D' }}>👋 Select your preferred option below and submit your RSVP</p>
+        </div>
 
         {invite.finalizedOption !== null && (
           <div className="mb-4 p-4 rounded-2xl" style={{ backgroundColor: '#F4E96D' }}>
