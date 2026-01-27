@@ -897,8 +897,8 @@ if (screen === 'confirmation') {
     const isComplete = invite.hasGuestLimit && totalResponses >= invite.guestLimit;
     
     return (
-      <div className="min-h-screen" style={{ backgroundColor: '#E8E6E1' }}>
-        <div className="max-w-md mx-auto p-6">
+  <div className="min-h-screen" style={{ backgroundColor: '#E8E6E1' }}>
+    <div className="max-w-md mx-auto p-6 pb-32">
         <div className="flex justify-between items-center mb-2">
   <h2 className="text-5xl font-bold" style={{ color: '#3D3D3D' }}>
     {isComplete ? "Let's go!" : totalResponses === 0 ? "Waiting..." : "Groops"}
