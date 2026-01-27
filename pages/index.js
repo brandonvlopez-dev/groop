@@ -34,6 +34,7 @@ const firebaseService = {
                       fields: {
                         name: { stringValue: opt.name },
                         date: { stringValue: opt.date },
+                        endDate: { stringValue: opt.endDate || '' },
                         time: { stringValue: opt.time }
                       }
                     }
@@ -82,6 +83,7 @@ const firebaseService = {
   options: fields.options?.arrayValue?.values?.map(v => ({
     name: v.mapValue?.fields?.name?.stringValue,
     date: v.mapValue?.fields?.date?.stringValue,
+    endDate: v.mapValue?.fields?.endDate?.stringValue || '',
     time: v.mapValue?.fields?.time?.stringValue
   })) || [],
   hasGuestLimit: fields.hasGuestLimit?.booleanValue || false,
@@ -159,6 +161,7 @@ export default function Home() {
   const [currentOption, setCurrentOption] = useState({
     name: '',
     date: '',
+    endDate: '',
     time: ''
   });
   const [inviteId, setInviteId] = useState(null);
@@ -210,7 +213,7 @@ const [loadInviteId, setLoadInviteId] = useState('');
         ...inviteData,
         options: [...inviteData.options, currentOption]
       });
-      setCurrentOption({ name: '', date: '', time: '' });
+      setCurrentOption({ name: '', date: '', endDate: '', time: '' });
     }
   };
 
@@ -294,6 +297,20 @@ const formatTime = (time24) => {
   // Parse as local date to avoid timezone issues
   const [year, month, day] = dateString.split('-');
   return new Date(year, month - 1, day);
+};
+
+  const formatDateRange = (startDate, endDate) => {
+  const start = parseDate(startDate);
+  const startStr = start.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+  
+  if (!endDate || endDate === startDate) {
+    return startStr;
+  }
+  
+  const end = parseDate(endDate);
+  const endStr = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  
+  return `${startStr} - ${endStr}`;
 };
 
   const getTotalResponses = () => {
@@ -563,19 +580,35 @@ if (screen === 'home') {
           <div className="space-y-4">
            <div className="bg-white rounded-3xl p-6">
   <h3 className="font-bold text-lg mb-3">Date + Time</h3>
-  <div className="grid grid-cols-2 gap-3">
+  <div className="grid grid-cols-2 gap-3 mb-3">
+    <div>
+      <label className="text-xs mb-1 block" style={{ color: '#666' }}>Start Date</label>
+      <input
+        type="date"
+        value={currentOption.date}
+        onChange={(e) => setCurrentOption({ ...currentOption, date: e.target.value })}
+        className="w-full px-4 py-3 rounded-full text-sm font-medium outline-none"
+        style={{ backgroundColor: '#E5B88A' }}
+      />
+    </div>
+    <div>
+      <label className="text-xs mb-1 block" style={{ color: '#666' }}>Start Time</label>
+      <input
+        type="time"
+        value={currentOption.time}
+        onChange={(e) => setCurrentOption({ ...currentOption, time: e.target.value })}
+        className="w-full px-4 py-3 rounded-full text-sm font-medium outline-none"
+        style={{ backgroundColor: '#E5B88A' }}
+      />
+    </div>
+  </div>
+  <div>
+    <label className="text-xs mb-1 block" style={{ color: '#666' }}>End Date (optional - leave blank for single day)</label>
     <input
       type="date"
-      value={currentOption.date}
-      onChange={(e) => setCurrentOption({ ...currentOption, date: e.target.value })}
-      className="px-4 py-3 rounded-full text-sm font-medium outline-none"
-      style={{ backgroundColor: '#E5B88A' }}
-    />
-    <input
-      type="time"
-      value={currentOption.time}
-      onChange={(e) => setCurrentOption({ ...currentOption, time: e.target.value })}
-      className="px-4 py-3 rounded-full text-sm font-medium outline-none"
+      value={currentOption.endDate}
+      onChange={(e) => setCurrentOption({ ...currentOption, endDate: e.target.value })}
+      className="w-full px-4 py-3 rounded-full text-sm font-medium outline-none"
       style={{ backgroundColor: '#E5B88A' }}
     />
   </div>
@@ -693,7 +726,7 @@ if (screen === 'home') {
                 </h3>
                 <div className="flex justify-between items-center">
                   <span className="text-lg" style={{ color: '#3D3D3D' }}>
-                    {parseDate(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+                    {formatDateRange(option.date, option.endDate)}
                   </span>
                   <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
                     {formatTime(option.time)}
@@ -830,7 +863,7 @@ if (screen === 'rsvp' && invite) {
                 
                 <div className="flex justify-between items-center">
                   <span className="text-lg" style={{ color: '#3D3D3D' }}>
-                    {parseDate(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+                    {formatDateRange(option.date, option.endDate)}
                   </span>
                   <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
                     {formatTime(option.time)}
@@ -1034,7 +1067,7 @@ if (screen === 'dashboard' && invite) {
                 
                 <div className="flex justify-between items-center">
                   <span className="text-lg" style={{ color: '#3D3D3D' }}>
-                    {parseDate(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+                    {formatDateRange(option.date, option.endDate)}
                   </span>
                   <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
                     {formatTime(option.time)}
