@@ -985,13 +985,22 @@ if (screen === 'home') {
   })}
 </div>
 
-          <button
-            onClick={() => setScreen('share')}
-            className="w-full mt-6 py-4 rounded-full font-medium"
-            style={{ backgroundColor: '#5C5F52', color: 'white' }}
-          >
-            Back to Share
-          </button>
+          <div className="flex gap-3 mt-6">
+  <button
+    onClick={() => setScreen('home')}
+    className="flex-1 py-4 rounded-full font-medium"
+    style={{ backgroundColor: '#E5B88A' }}
+  >
+    Home
+  </button>
+  <button
+    onClick={() => setScreen('share')}
+    className="flex-1 py-4 rounded-full font-medium"
+    style={{ backgroundColor: '#5C5F52', color: 'white' }}
+  >
+    Back to Share
+  </button>
+</div>
         </div>
       </div>
     );
