@@ -172,11 +172,11 @@ const [showLoadInvite, setShowLoadInvite] = useState(false);
 const [loadInviteId, setLoadInviteId] = useState('');
   
   useEffect(() => {
-    if (screen === 'splash') {
-      const timer = setTimeout(() => setScreen('create'), 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [screen]);
+  if (screen === 'splash') {
+    const timer = setTimeout(() => setScreen('home'), 2000);
+    return () => clearTimeout(timer);
+  }
+}, [screen]);
 
   useEffect(() => {
   if (typeof window !== 'undefined') {
