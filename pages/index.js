@@ -393,6 +393,89 @@ if (screen === 'splash') {
   );
 }
 
+// Home Screen
+if (screen === 'home') {
+  const [showLoadInvite, setShowLoadInvite] = useState(false);
+  const [loadInviteId, setLoadInviteId] = useState('');
+
+  const handleLoadInvite = async () => {
+    if (loadInviteId.trim()) {
+      let id = loadInviteId.trim().toUpperCase();
+      if (id.includes('invite=')) {
+        const match = id.match(/invite=([^&]+)/);
+        if (match) id = match[1];
+      }
+      
+      setLoading(true);
+      const data = await firebaseService.getInvite(id);
+      if (data) {
+        setInvite(data);
+        setInviteId(id);
+        setInviteData({
+          title: data.title,
+          options: data.options,
+          hasGuestLimit: data.hasGuestLimit,
+          guestLimit: data.guestLimit
+        });
+        if (typeof window !== 'undefined') {
+          window.history.pushState({}, '', `?invite=${id}&view=dashboard`);
+        }
+        setScreen('dashboard');
+      } else {
+        alert('Invite not found. Please check the code or link.');
+      }
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-6" style={{ backgroundColor: '#E8E6E1' }}>
+      <div className="max-w-md w-full space-y-4">
+        <div className="text-center mb-8">
+          <h1 className="text-6xl font-bold mb-2" style={{ color: '#3D3D3D' }}>groop</h1>
+          <p className="text-lg" style={{ color: '#666' }}>Let's get together.</p>
+        </div>
+        
+        <button
+          onClick={() => setScreen('create')}
+          className="w-full py-4 rounded-full font-medium text-lg"
+          style={{ backgroundColor: '#F4E96D' }}
+        >
+          Create New Invite
+        </button>
+        
+        <button
+          onClick={() => setShowLoadInvite(!showLoadInvite)}
+          className="w-full py-4 rounded-full font-medium text-lg"
+          style={{ backgroundColor: '#E5B88A' }}
+        >
+          Load My Invite
+        </button>
+        
+        {showLoadInvite && (
+          <div className="mt-4 space-y-3 bg-white p-6 rounded-3xl">
+            <input
+              type="text"
+              placeholder="Enter invite code or paste link"
+              value={loadInviteId}
+              onChange={(e) => setLoadInviteId(e.target.value)}
+              className="w-full px-4 py-3 rounded-full text-sm font-medium outline-none"
+              style={{ backgroundColor: '#E5B88A' }}
+            />
+            <button
+              onClick={handleLoadInvite}
+              className="w-full py-3 rounded-full font-medium"
+              style={{ backgroundColor: '#F4E96D' }}
+            >
+              Load Dashboard
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
   return (
     <div className="min-h-screen flex items-center justify-center p-6" style={{ backgroundColor: '#C4BDAA' }}>
       <div className="relative" style={{ 
