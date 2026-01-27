@@ -1010,7 +1010,7 @@ if (screen === 'dashboard' && invite) {
                   </div>
                 )}
                 
-                {!isFinalized && responses.length > 0 && invite.finalizedOption === null && (
+               {!isFinalized && responses.length > 0 && invite.finalizedOption === null && (
                   <button
                     onClick={() => {
                       if (window.confirm(`Finalize "${option.name}"? This will set it as the final event.`)) {
@@ -1025,16 +1025,16 @@ if (screen === 'dashboard' && invite) {
                 )}
                 
                 {isFinalized && (
-  
-    href={generateCalendarLink(option)}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="block w-full mt-3 py-2 rounded-full text-sm font-medium text-center"
-    style={{ backgroundColor: '#F4E96D' }}
-  >
-    Add to Google Calendar
-  </a>
-)}
+                  
+                    href={generateCalendarLink(option)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full mt-3 py-2 rounded-full text-sm font-medium text-center"
+                    style={{ backgroundColor: '#F4E96D' }}
+                  >
+                    Add to Google Calendar
+                  </a>
+                )}
               </div>
             );
           })}
