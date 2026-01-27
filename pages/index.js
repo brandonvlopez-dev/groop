@@ -901,7 +901,7 @@ if (screen === 'home') {
     return (
       <div className="min-h-screen" style={{ backgroundColor: '#E8E6E1' }}>
         <div className="max-w-md mx-auto p-6">
-          <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-2">
   <h2 className="text-5xl font-bold" style={{ color: '#3D3D3D' }}>
     {isComplete ? "Let's go!" : totalResponses === 0 ? "Waiting..." : "Groops"}
   </h2>
@@ -930,8 +930,12 @@ if (screen === 'home') {
     </button>
   </div>
 </div>
+<div className="mb-6 px-4 py-2 bg-white rounded-full text-center">
+  <span className="text-sm" style={{ color: '#666' }}>Code: </span>
+  <span className="font-bold text-lg" style={{ color: '#3D3D3D' }}>{inviteId?.toUpperCase()}</span>
+</div>
 
-          <div className="space-y-3">
+<div className="space-y-3">
   {invite.options.map((option, i) => {
     const responses = getOptionResponses(i);
     const hasResponses = responses.length > 0;
