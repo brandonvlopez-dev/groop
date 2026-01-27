@@ -560,7 +560,7 @@ if (screen === 'home') {
     return (
       <div className="min-h-screen" style={{ backgroundColor: '#E8E6E1' }}>
         <div className="max-w-md mx-auto p-6 pb-40">
-          <div className="mb-4 p-4 rounded-2xl" style={{ backgroundColor: '#F4E96D' }}>
+          <div className="mb-4 p-4 rounded-2xl" style={{ backgroundColor: '#D4E5F7' }}>
             <p className="text-sm font-bold" style={{ color: '#3D3D3D' }}>💡 Fill in date, time & location below, then tap "Add option +" to create multiple options for your group to vote on</p>
           </div>
           
@@ -800,7 +800,7 @@ if (screen === 'rsvp' && invite) {
         </div>
 
         {invite.finalizedOption !== null && (
-          <div className="mb-4 p-4 rounded-2xl" style={{ backgroundColor: '#F4E96D' }}>
+          <div className="mb-4 p-4 rounded-2xl" style={{ backgroundColor: '#D4E5F7' }}>
             <p className="text-sm font-bold mb-1">Event Finalized!</p>
             <p className="text-sm">The organizer has selected: <strong>{invite.options[invite.finalizedOption].name}</strong></p>
             <p className="text-xs mt-2" style={{ color: '#666' }}>RSVPs are now closed.</p>
