@@ -548,11 +548,13 @@ if (screen === 'home') {
           </div>
           
           <div className="mb-8">
+            <label className="block text-sm font-bold mb-2" style={{ color: '#666' }}>Event Title *</label>
             <input
               type="text"
-              placeholder="Let's"
+              placeholder="Let's grab dinner"
               value={inviteData.title}
               onChange={(e) => setInviteData({ ...inviteData, title: e.target.value })}
+              required
               className="text-5xl font-bold w-full bg-transparent border-b-4 border-black outline-none pb-2"
               style={{ color: '#3D3D3D' }}
             />
