@@ -166,8 +166,10 @@ export default function Home() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [rsvpForm, setRsvpForm] = useState({ name: '', phone: '' });
   const [existingRsvp, setExistingRsvp] = useState(null);
-  const [loading, setLoading] = useState(false);
+const [loading, setLoading] = useState(false);
 const [finalizedOption, setFinalizedOption] = useState(null);
+const [showLoadInvite, setShowLoadInvite] = useState(false);
+const [loadInviteId, setLoadInviteId] = useState('');
 const [showLoadInvite, setShowLoadInvite] = useState(false);
 const [loadInviteId, setLoadInviteId] = useState('');
   
