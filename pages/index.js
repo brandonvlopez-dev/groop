@@ -543,6 +543,10 @@ if (screen === 'home') {
     return (
       <div className="min-h-screen" style={{ backgroundColor: '#E8E6E1' }}>
         <div className="max-w-md mx-auto p-6 pb-40">
+          <div className="mb-4 p-4 rounded-2xl" style={{ backgroundColor: '#F4E96D' }}>
+            <p className="text-sm font-bold" style={{ color: '#3D3D3D' }}>💡 Fill in date, time & location below, then tap "Add option +" to create multiple options for your group to vote on</p>
+          </div>
+          
           <div className="mb-8">
             <input
               type="text"
