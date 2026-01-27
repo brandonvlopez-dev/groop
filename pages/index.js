@@ -709,150 +709,153 @@ if (screen === 'home') {
     );
   }
 
-  // RSVP Screen
-  if (screen === 'rsvp' && invite) {
-    return (
-      <div className="min-h-screen" style={{ backgroundColor: '#E8E6E1' }}>
-        <div className="max-w-md mx-auto p-6 pb-32">
-          <h2 className="text-4xl font-bold mb-6" style={{ color: '#3D3D3D' }}>
-            The options
-          </h2>
+// RSVP Screen
+if (screen === 'rsvp' && invite) {
+  return (
+    <div className="min-h-screen" style={{ backgroundColor: '#E8E6E1' }}>
+      <div className="max-w-md mx-auto p-6 pb-32">
+        <h2 className="text-4xl font-bold mb-6" style={{ color: '#3D3D3D' }}>
+          The options
+        </h2>
 
-{invite.finalizedOption !== null && (
-  <div className="mb-4 p-4 rounded-2xl" style={{ backgroundColor: '#F4E96D' }}>
-    <p className="text-sm font-bold mb-1">Event Finalized!</p>
-    <p className="text-sm">The organizer has selected: <strong>{invite.options[invite.finalizedOption].name}</strong></p>
-  </div>
-)}
-
-
-          {existingRsvp && (
-            <div className="mb-4 p-4 bg-yellow-100 rounded-2xl">
-              <p className="text-sm font-medium">You've already RSVPed! You can change your selection below.</p>
-            </div>
-          )}
-
-          {isCapacityReached() && !existingRsvp && (
-            <div className="mb-4 p-4 bg-red-100 rounded-2xl">
-              <p className="text-sm font-medium">This event is at capacity. No more spots available.</p>
-            </div>
-          )}
-
-          <div className="space-y-3 mb-8">
-            {invite.options.map((option, i) => {
-              const responses = getOptionResponses(i);
-              const optionFull = invite.hasGuestLimit && getTotalResponses() >= invite.guestLimit && responses.length === 0;
-              const isSelected = selectedOption === i;
-              
-              return (
-                <button
-                  key={i}
-                  onClick={() => !isCapacityReached() || existingRsvp ? setSelectedOption(i) : null}
-                  disabled={isCapacityReached() && !existingRsvp}
-                  className="w-full p-6 rounded-3xl text-left relative"
-                  style={{ 
-                    backgroundColor: isSelected ? '#C4BDAA' : optionFull ? '#D9D9D9' : '#F5F1E8',
-                    opacity: (isCapacityReached() && !existingRsvp) ? 0.5 : 1
-                  }}
-                >
-                  {isSelected && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedOption(null);
-                      }}
-                      className="absolute top-4 right-4"
-                    >
-                      <X size={24} />
-                    </button>
-                  )}
-                  
-                  <h3 className="text-2xl font-bold mb-2" style={{ color: '#3D3D3D' }}>
-                    {option.name}
-                  </h3>
-                  
-                  {invite.hasGuestLimit && (
-                    <div className="flex gap-1 mb-2">
-                      {[...Array(invite.guestLimit)].map((_, idx) => (
-                        <div
-                          key={idx}
-                          className="w-3 h-3 rounded-full"
-                          style={{ backgroundColor: idx < responses.length ? '#F4E96D' : '#D9D9D9' }}
-                        />
-                      ))}
-                    </div>
-                  )}
-                  
-                  <div className="flex justify-between items-center">
-                    <span className="text-lg" style={{ color: '#3D3D3D' }}>
-                      {new Date(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
-                    </span>
-                    <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
-                      {formatTime(option.time)}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
+        {invite.finalizedOption !== null && (
+          <div className="mb-4 p-4 rounded-2xl" style={{ backgroundColor: '#F4E96D' }}>
+            <p className="text-sm font-bold mb-1">Event Finalized!</p>
+            <p className="text-sm">The organizer has selected: <strong>{invite.options[invite.finalizedOption].name}</strong></p>
+            <p className="text-xs mt-2" style={{ color: '#666' }}>RSVPs are now closed.</p>
           </div>
+        )}
 
-         <div className="space-y-3">
-  <input
-    type="text"
-    placeholder="Name"
-    value={rsvpForm.name}
-    onChange={(e) => setRsvpForm({ ...rsvpForm, name: e.target.value })}
-    className="w-full px-6 py-4 rounded-full font-medium outline-none"
-    style={{ backgroundColor: '#E5B88A' }}
-  />
-  <input
-    type="tel"
-    placeholder="Phone"
-    value={rsvpForm.phone}
-    onChange={(e) => setRsvpForm({ ...rsvpForm, phone: e.target.value })}
-    onBlur={checkExistingRsvp}
-    className="w-full px-6 py-4 rounded-full font-medium outline-none"
-    style={{ backgroundColor: '#E5B88A' }}
-  />
-  <button
-    onClick={submitRsvp}
-    disabled={!rsvpForm.name || !rsvpForm.phone || selectedOption === null || (isCapacityReached() && !existingRsvp)}
-    className="w-full py-4 rounded-full font-medium disabled:opacity-50"
-    style={{ backgroundColor: '#F4E96D' }}
-  >
-    Submit
-  </button>
-  <button
-    onClick={async () => {
-      if (!rsvpForm.name || !rsvpForm.phone) {
-        alert('Please enter your name and phone number');
-        return;
-      }
-      setLoading(true);
-      const response = {
-        name: rsvpForm.name,
-        phone: rsvpForm.phone,
-        optionIndex: -1,
-        timestamp: Date.now()
-      };
-      const success = await firebaseService.addResponse(inviteId, response);
-      if (success) {
-        await loadInvite(inviteId);
-        setScreen('confirmation');
-      }
-      setLoading(false);
-    }}
-    disabled={!rsvpForm.name || !rsvpForm.phone}
-    className="w-full py-4 rounded-full font-medium disabled:opacity-50"
-    style={{ backgroundColor: '#D9D9D9' }}
-  >
-    I Can't Make It
-  </button>
-</div>
+        {existingRsvp && invite.finalizedOption === null && (
+          <div className="mb-4 p-4 bg-yellow-100 rounded-2xl">
+            <p className="text-sm font-medium">You've already RSVPed! You can change your selection below.</p>
+          </div>
+        )}
+
+        {isCapacityReached() && !existingRsvp && invite.finalizedOption === null && (
+          <div className="mb-4 p-4 bg-red-100 rounded-2xl">
+            <p className="text-sm font-medium">This event is at capacity. No more spots available.</p>
+          </div>
+        )}
+
+        <div className="space-y-3 mb-8">
+          {invite.options.map((option, i) => {
+            const responses = getOptionResponses(i);
+            const optionFull = invite.hasGuestLimit && getTotalResponses() >= invite.guestLimit && responses.length === 0;
+            const isSelected = selectedOption === i;
+            const isEventFinalized = invite.finalizedOption !== null;
+            
+            return (
+              <button
+                key={i}
+                onClick={() => !isCapacityReached() && !isEventFinalized || existingRsvp ? setSelectedOption(i) : null}
+                disabled={(isCapacityReached() && !existingRsvp) || isEventFinalized}
+                className="w-full p-6 rounded-3xl text-left relative"
+                style={{ 
+                  backgroundColor: isSelected ? '#C4BDAA' : optionFull ? '#D9D9D9' : '#F5F1E8',
+                  opacity: ((isCapacityReached() && !existingRsvp) || isEventFinalized) ? 0.5 : 1
+                }}
+              >
+                {isSelected && !isEventFinalized && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedOption(null);
+                    }}
+                    className="absolute top-4 right-4"
+                  >
+                    <X size={24} />
+                  </button>
+                )}
+                
+                <h3 className="text-2xl font-bold mb-2" style={{ color: '#3D3D3D' }}>
+                  {option.name}
+                </h3>
+                
+                {invite.hasGuestLimit && (
+                  <div className="flex gap-1 mb-2">
+                    {[...Array(invite.guestLimit)].map((_, idx) => (
+                      <div
+                        key={idx}
+                        className="w-3 h-3 rounded-full"
+                        style={{ backgroundColor: idx < responses.length ? '#F4E96D' : '#D9D9D9' }}
+                      />
+                    ))}
+                  </div>
+                )}
+                
+                <div className="flex justify-between items-center">
+                  <span className="text-lg" style={{ color: '#3D3D3D' }}>
+                    {new Date(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+                  </span>
+                  <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
+                    {formatTime(option.time)}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="space-y-3">
+          <input
+            type="text"
+            placeholder="Name"
+            value={rsvpForm.name}
+            onChange={(e) => setRsvpForm({ ...rsvpForm, name: e.target.value })}
+            disabled={invite.finalizedOption !== null}
+            className="w-full px-6 py-4 rounded-full font-medium outline-none"
+            style={{ backgroundColor: '#E5B88A', opacity: invite.finalizedOption !== null ? 0.5 : 1 }}
+          />
+          <input
+            type="tel"
+            placeholder="Phone"
+            value={rsvpForm.phone}
+            onChange={(e) => setRsvpForm({ ...rsvpForm, phone: e.target.value })}
+            onBlur={checkExistingRsvp}
+            disabled={invite.finalizedOption !== null}
+            className="w-full px-6 py-4 rounded-full font-medium outline-none"
+            style={{ backgroundColor: '#E5B88A', opacity: invite.finalizedOption !== null ? 0.5 : 1 }}
+          />
+          <button
+            onClick={submitRsvp}
+            disabled={!rsvpForm.name || !rsvpForm.phone || selectedOption === null || (isCapacityReached() && !existingRsvp) || invite.finalizedOption !== null}
+            className="w-full py-4 rounded-full font-medium disabled:opacity-50"
+            style={{ backgroundColor: '#F4E96D' }}
+          >
+            Submit
+          </button>
+          <button
+            onClick={async () => {
+              if (!rsvpForm.name || !rsvpForm.phone) {
+                alert('Please enter your name and phone number');
+                return;
+              }
+              setLoading(true);
+              const response = {
+                name: rsvpForm.name,
+                phone: rsvpForm.phone,
+                optionIndex: -1,
+                timestamp: Date.now()
+              };
+              const success = await firebaseService.addResponse(inviteId, response);
+              if (success) {
+                await loadInvite(inviteId);
+                setScreen('confirmation');
+              }
+              setLoading(false);
+            }}
+            disabled={!rsvpForm.name || !rsvpForm.phone || invite.finalizedOption !== null}
+            className="w-full py-4 rounded-full font-medium disabled:opacity-50"
+            style={{ backgroundColor: '#D9D9D9' }}
+          >
+            I Can't Make It
+          </button>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   // Confirmation Screen
 if (screen === 'confirmation') {
