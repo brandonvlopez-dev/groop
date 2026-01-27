@@ -14,11 +14,11 @@ const firebaseConfig = {
 
 // Firebase service using fetch API
 const firebaseService = {
-  async createInvite(data) {
-    const id = Math.random().toString(36).substr(2, 9);
-    
-    try {
-      const response = await fetch(
+ async createInvite(data) {
+  const id = data.id || Math.random().toString(36).substr(2, 9);
+  
+  try {
+    const response = await fetch(
         `https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents/invites`,
         {
           method: 'POST',
