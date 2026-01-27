@@ -657,7 +657,7 @@ if (screen === 'home') {
                     {new Date(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
                   </span>
                   <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
-                    {option.time}
+                    {formatTime(option.time)}
                   </span>
                 </div>
               </div>
@@ -789,7 +789,7 @@ if (screen === 'home') {
                       {new Date(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
                     </span>
                     <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
-                      {option.time}
+                      {formatTime(option.time)}
                     </span>
                   </div>
                 </button>
@@ -988,7 +988,7 @@ if (screen === 'confirmation') {
             {new Date(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
           </span>
           <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
-            {option.time}
+            {formatTime(option.time)}
           </span>
         </div>
 
