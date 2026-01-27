@@ -320,6 +320,34 @@ const formatTime = (time24) => {
     }
   };
 
+const shareFinalPlan = () => {
+  if (!invite || invite.finalizedOption === null) return;
+  
+  const finalOption = invite.options[invite.finalizedOption];
+  const dateStr = new Date(finalOption.date).toLocaleDateString('en-US', { 
+    weekday: 'long', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+  const timeStr = formatTime(finalOption.time);
+  
+  const attendees = getOptionResponses(invite.finalizedOption);
+  const attendeeNames = attendees.map(r => r.name).join(', ');
+  
+  const message = `📍 ${inviteData.title} is confirmed!\n\n` +
+    `📅 When: ${dateStr} at ${timeStr}\n` +
+    `📌 Where: ${finalOption.name}\n` +
+    `👥 Who: ${attendeeNames}\n\n` +
+    `See you there! 🎉`;
+  
+  if (typeof window !== 'undefined' && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    window.location.href = `sms:?&body=${encodeURIComponent(message)}`;
+  } else {
+    navigator.clipboard.writeText(message);
+    alert('Final plan copied to clipboard!');
+  }
+};
+  
   const viewDashboard = async () => {
   setLoading(true);
   if (typeof window !== 'undefined') {
