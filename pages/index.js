@@ -621,7 +621,7 @@ if (screen === 'home') {
 </h2>
 <div className="mb-6 p-4 bg-white rounded-2xl text-center">
   <p className="text-sm mb-1" style={{ color: '#666' }}>Your invite code:</p>
-  <p className="text-3xl font-bold tracking-wider" style={{ color: '#3D3D3D' }}>{inviteId?.toUpperCase()}</p>
+  <p className="text-3xl font-bold tracking-wider" style={{ color: '#3D3D3D' }}>{inviteId}</p>
   <p className="text-xs mt-1" style={{ color: '#666' }}>Share this code or the link below</p>
 </div>
 
