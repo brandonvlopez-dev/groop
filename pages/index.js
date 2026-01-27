@@ -397,8 +397,6 @@ if (screen === 'splash') {
 
 // Home Screen
 if (screen === 'home') {
-  const [showLoadInvite, setShowLoadInvite] = useState(false);
-  const [loadInviteId, setLoadInviteId] = useState('');
 
   const handleLoadInvite = async () => {
     if (loadInviteId.trim()) {
