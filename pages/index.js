@@ -1024,17 +1024,17 @@ if (screen === 'dashboard' && invite) {
                   </button>
                 )}
                 
-                {isFinalized && (
-                  
-                    href={generateCalendarLink(option)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full mt-3 py-2 rounded-full text-sm font-medium text-center"
-                    style={{ backgroundColor: '#F4E96D' }}
-                  >
-                    Add to Google Calendar
-                  </a>
-                )}
+              {isFinalized && (
+  
+    href={generateCalendarLink(option)}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="block w-full mt-3 py-2 rounded-full text-sm font-medium text-center"
+    style={{ backgroundColor: '#F4E96D' }}
+  >
+    Add to Google Calendar
+  </a>
+)}
               </div>
             );
           })}
