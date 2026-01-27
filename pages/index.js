@@ -397,12 +397,12 @@ if (screen === 'splash') {
 if (screen === 'home') {
 
   const handleLoadInvite = async () => {
-    if (loadInviteId.trim()) {
-      let id = loadInviteId.trim().toUpperCase();
-      if (id.includes('invite=')) {
-        const match = id.match(/invite=([^&]+)/);
-        if (match) id = match[1];
-      }
+  if (loadInviteId.trim()) {
+    let id = loadInviteId.trim();
+    if (id.includes('invite=')) {
+      const match = id.match(/invite=([^&]+)/);
+      if (match) id = match[1];
+    }
       
       setLoading(true);
       const data = await firebaseService.getInvite(id);
