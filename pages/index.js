@@ -222,23 +222,33 @@ const [loadInviteId, setLoadInviteId] = useState('');
   };
 
   const createInvite = async () => {
-    if (inviteData.title && inviteData.options.length > 0) {
-      setLoading(true);
-      try {
-        const id = await firebaseService.createInvite(inviteData);
-        if (id) {
-          setInviteId(id);
-          setScreen('share');
-        } else {
-          alert('Failed to create invite. Please try again.');
-        }
-      } catch (error) {
-        console.error('Error creating invite:', error);
-        alert('Error creating invite: ' + error.message);
+  if (inviteData.title && inviteData.options.length > 0) {
+    setLoading(true);
+    try {
+      // If we already have an inviteId, we're editing an existing invite
+      let id;
+      if (inviteId) {
+        // Update existing invite - reuse the same ID
+        id = inviteId;
+        await firebaseService.createInvite({ ...inviteData, id: inviteId });
+      } else {
+        // Create new invite
+        id = await firebaseService.createInvite(inviteData);
       }
-      setLoading(false);
+      
+      if (id) {
+        setInviteId(id);
+        setScreen('share');
+      } else {
+        alert('Failed to create invite. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error creating invite:', error);
+      alert('Error creating invite: ' + error.message);
     }
-  };
+    setLoading(false);
+  }
+};
 
   const checkExistingRsvp = async () => {
     if (!rsvpForm.phone || !invite) return;
