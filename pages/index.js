@@ -1062,16 +1062,17 @@ if (screen === 'dashboard' && invite) {
                 )}
                 
               {isFinalized && (
-  <a
-    href={generateCalendarLink(option)}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="block w-full mt-3 py-2 rounded-full text-sm font-medium text-center"
-    style={{ backgroundColor: '#F4E96D' }}
-  >
-    Add to Google Calendar
-  </a>
-<button
+                  <>
+                    
+                      href={generateCalendarLink(option)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full mt-3 py-2 rounded-full text-sm font-medium text-center"
+                      style={{ backgroundColor: '#F4E96D' }}
+                    >
+                      Add to Google Calendar
+                    </a>
+                    <button
                       onClick={shareFinalPlan}
                       className="w-full mt-2 py-2 rounded-full text-sm font-medium flex items-center justify-center gap-2"
                       style={{ backgroundColor: '#E5B88A' }}
@@ -1081,7 +1082,7 @@ if (screen === 'dashboard' && invite) {
                     </button>
                   </>
                 )}
-)}
+                  
               </div>
             );
           })}
