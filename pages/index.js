@@ -821,28 +821,40 @@ if (screen === 'home') {
   }
 
   // Confirmation Screen
-  if (screen === 'confirmation') {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#C4BDAA' }}>
-        <div className="relative" style={{ 
+if (screen === 'confirmation') {
+  return (
+    <div className="min-h-screen flex items-center justify-center p-6" style={{ backgroundColor: '#C4BDAA' }}>
+      <div className="max-w-md w-full">
+        <div className="relative mb-6" style={{ 
           width: '280px', 
-          height: '560px', 
+          height: '400px',
+          margin: '0 auto',
           backgroundColor: '#E5B88A',
           borderRadius: '140px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '16px'
+          gap: '16px',
+          padding: '40px'
         }}>
-          <h1 className="text-white text-7xl font-light tracking-tight">groop</h1>
-          <p className="text-white text-lg text-center px-8">
+          <h1 className="text-white text-6xl font-light tracking-tight">groop</h1>
+          <p className="text-white text-lg text-center">
             Your response<br />is confirmed
           </p>
         </div>
+        
+        <button
+          onClick={() => setScreen('rsvp')}
+          className="w-full py-4 rounded-full font-medium"
+          style={{ backgroundColor: '#E5B88A' }}
+        >
+          Edit Response
+        </button>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   // Dashboard Screen
   if (screen === 'dashboard' && invite) {
