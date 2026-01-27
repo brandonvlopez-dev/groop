@@ -793,7 +793,7 @@ if (screen === 'rsvp' && invite) {
           {invite.title}
         </h2>
         
-        <div className="mb-6 p-4 rounded-2xl" style={{ backgroundColor: '#F4E96D' }}>
+        <div className="mb-6 p-4 rounded-2xl" style={{ backgroundColor: '#D4E5F7' }}>
           <p className="text-sm font-bold" style={{ color: '#3D3D3D' }}>
             {isSingleOption ? '👋 Let us know if you can make it!' : '👋 Select your preferred option below and submit your RSVP'}
           </p>
