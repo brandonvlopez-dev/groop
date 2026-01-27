@@ -371,40 +371,27 @@ const generateCalendarLink = (option) => {
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;
 };
 
- // Splash Screen
+// Splash Screen
 if (screen === 'splash') {
- 
-
-  const handleLoadInvite = async () => {
-    if (loadInviteId.trim()) {
-      // Extract invite ID from full URL or use as-is
-      let id = loadInviteId.trim();
-      if (id.includes('invite=')) {
-        const match = id.match(/invite=([^&]+)/);
-        if (match) id = match[1];
-      }
-      
-      setLoading(true);
-      const data = await firebaseService.getInvite(id);
-      if (data) {
-        setInvite(data);
-        setInviteId(id);
-        setInviteData({
-          title: data.title,
-          options: data.options,
-          hasGuestLimit: data.hasGuestLimit,
-          guestLimit: data.guestLimit
-        });
-        if (typeof window !== 'undefined') {
-          window.history.pushState({}, '', `?invite=${id}&view=dashboard`);
-        }
-        setScreen('dashboard');
-      } else {
-        alert('Invite not found. Please check the ID or link.');
-      }
-      setLoading(false);
-    }
-  };
+  return (
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#C4BDAA' }}>
+      <div className="relative" style={{ 
+        width: '280px', 
+        height: '560px', 
+        backgroundColor: '#E5B88A',
+        borderRadius: '140px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '16px'
+      }}>
+        <h1 className="text-white text-7xl font-light tracking-tight">groop</h1>
+        <p className="text-white text-lg">Let's get together.</p>
+      </div>
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6" style={{ backgroundColor: '#C4BDAA' }}>
