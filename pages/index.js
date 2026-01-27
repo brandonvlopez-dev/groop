@@ -289,7 +289,6 @@ const formatTime = (time24) => {
   const hour12 = hour % 12 || 12;
   return `${hour12}:${minutes} ${ampm}`;
 };
-  };
 
   const getTotalResponses = () => {
     return invite?.responses?.length || 0;
