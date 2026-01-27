@@ -35,7 +35,8 @@ const firebaseService = {
                         name: { stringValue: opt.name },
                         date: { stringValue: opt.date },
                         endDate: { stringValue: opt.endDate || '' },
-                        time: { stringValue: opt.time }
+                        time: { stringValue: opt.time },
+                        endTime: { stringValue: opt.endTime || '' }
                       }
                     }
                   }))
@@ -84,7 +85,8 @@ const firebaseService = {
     name: v.mapValue?.fields?.name?.stringValue,
     date: v.mapValue?.fields?.date?.stringValue,
     endDate: v.mapValue?.fields?.endDate?.stringValue || '',
-    time: v.mapValue?.fields?.time?.stringValue
+    time: v.mapValue?.fields?.time?.stringValue,
+    endTime: v.mapValue?.fields?.endTime?.stringValue || ''
   })) || [],
   hasGuestLimit: fields.hasGuestLimit?.booleanValue || false,
   guestLimit: parseInt(fields.guestLimit?.integerValue || '4'),
@@ -162,7 +164,8 @@ export default function Home() {
     name: '',
     date: '',
     endDate: '',
-    time: ''
+    time: '',
+    endTime: ''
   });
   const [inviteId, setInviteId] = useState(null);
   const [invite, setInvite] = useState(null);
@@ -213,7 +216,7 @@ const [loadInviteId, setLoadInviteId] = useState('');
         ...inviteData,
         options: [...inviteData.options, currentOption]
       });
-      setCurrentOption({ name: '', date: '', endDate: '', time: '' });
+      setCurrentOption({ name: '', date: '', endDate: '', time: '', endTime: '' });
     }
   };
 
@@ -299,7 +302,7 @@ const formatTime = (time24) => {
   return new Date(year, month - 1, day);
 };
 
-  const formatDateRange = (startDate, endDate) => {
+const formatDateRange = (startDate, endDate) => {
   const start = parseDate(startDate);
   const startStr = start.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
   
@@ -310,6 +313,17 @@ const formatTime = (time24) => {
   const end = parseDate(endDate);
   const endStr = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   
+  return `${startStr} - ${endStr}`;
+};
+
+const formatTimeRange = (startTime, endTime) => {
+  const startStr = formatTime(startTime);
+  
+  if (!endTime || endTime === startTime) {
+    return startStr;
+  }
+  
+  const endStr = formatTime(endTime);
   return `${startStr} - ${endStr}`;
 };
 
@@ -602,15 +616,27 @@ if (screen === 'home') {
       />
     </div>
   </div>
-  <div>
-    <label className="text-xs mb-1 block" style={{ color: '#666' }}>End Date (optional - leave blank for single day)</label>
-    <input
-      type="date"
-      value={currentOption.endDate}
-      onChange={(e) => setCurrentOption({ ...currentOption, endDate: e.target.value })}
-      className="w-full px-4 py-3 rounded-full text-sm font-medium outline-none"
-      style={{ backgroundColor: '#E5B88A' }}
-    />
+  <div className="grid grid-cols-2 gap-3">
+    <div>
+      <label className="text-xs mb-1 block" style={{ color: '#666' }}>End Date (optional)</label>
+      <input
+        type="date"
+        value={currentOption.endDate}
+        onChange={(e) => setCurrentOption({ ...currentOption, endDate: e.target.value })}
+        className="w-full px-4 py-3 rounded-full text-sm font-medium outline-none"
+        style={{ backgroundColor: '#E5B88A' }}
+      />
+    </div>
+    <div>
+      <label className="text-xs mb-1 block" style={{ color: '#666' }}>End Time (optional)</label>
+      <input
+        type="time"
+        value={currentOption.endTime}
+        onChange={(e) => setCurrentOption({ ...currentOption, endTime: e.target.value })}
+        className="w-full px-4 py-3 rounded-full text-sm font-medium outline-none"
+        style={{ backgroundColor: '#E5B88A' }}
+      />
+    </div>
   </div>
 </div>
 
@@ -729,7 +755,7 @@ if (screen === 'home') {
                     {formatDateRange(option.date, option.endDate)}
                   </span>
                   <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
-                    {formatTime(option.time)}
+                    {formatTimeRange(option.time, option.endTime)}
                   </span>
                 </div>
               </div>
@@ -847,7 +873,7 @@ if (screen === 'rsvp' && invite) {
                   {formatDateRange(invite.options[0].date, invite.options[0].endDate)}
                 </span>
                 <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
-                  {formatTime(invite.options[0].time)}
+                  {formatTimeRange(invite.options[0].time, invite.options[0].endTime)}
                 </span>
               </div>
             </div>
@@ -905,7 +931,7 @@ if (screen === 'rsvp' && invite) {
                       {formatDateRange(option.date, option.endDate)}
                     </span>
                     <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
-                      {formatTime(option.time)}
+                      {formatTimeRange(option.time, option.endTime)}
                     </span>
                   </div>
                 </button>
@@ -1172,7 +1198,7 @@ if (screen === 'dashboard' && invite) {
                     {formatDateRange(option.date, option.endDate)}
                   </span>
                   <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
-                    {formatTime(option.time)}
+                    {formatTimeRange(option.time, option.endTime)}
                   </span>
                 </div>
 
@@ -1208,7 +1234,7 @@ if (screen === 'dashboard' && invite) {
                   </button>
                 )}
                 
-             {isFinalized && (
+                {isFinalized && (
                   <a
                     href={generateCalendarLink(option)}
                     target="_blank"
@@ -1230,7 +1256,6 @@ if (screen === 'dashboard' && invite) {
                     Share Plan with Group
                   </button>
                 )}
-      
                   
               </div>
             );
