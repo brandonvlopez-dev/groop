@@ -890,203 +890,195 @@ if (screen === 'confirmation') {
   );
 }
 
-  // Dashboard Screen
-  if (screen === 'dashboard' && invite) {
-    const totalResponses = getTotalResponses();
-    const isComplete = invite.hasGuestLimit && totalResponses >= invite.guestLimit;
-    
-    return (
-  <div className="min-h-screen" style={{ backgroundColor: '#E8E6E1' }}>
-    <div className="max-w-md mx-auto p-6 pb-32">
+// Dashboard Screen
+if (screen === 'dashboard' && invite) {
+  const totalResponses = getTotalResponses();
+  const isComplete = invite.hasGuestLimit && totalResponses >= invite.guestLimit;
+  
+  return (
+    <div className="min-h-screen" style={{ backgroundColor: '#E8E6E1' }}>
+      <div className="max-w-md mx-auto p-6 pb-32">
         <div className="flex justify-between items-center mb-2">
-  <h2 className="text-5xl font-bold" style={{ color: '#3D3D3D' }}>
-    {isComplete ? "Let's go!" : totalResponses === 0 ? "Waiting..." : "Groops"}
-  </h2>
-  <div className="flex gap-2">
-    <button
-      onClick={() => {
-        setInviteData({
-          title: invite.title,
-          options: invite.options,
-          hasGuestLimit: invite.hasGuestLimit,
-          guestLimit: invite.guestLimit
-        });
-        setScreen('create');
-      }}
-      className="px-4 py-2 rounded-full text-sm font-medium"
-      style={{ backgroundColor: '#F4E96D' }}
-    >
-      Edit
-    </button>
-    <button
-      onClick={refreshDashboard}
-      className="px-4 py-2 rounded-full text-sm font-medium"
-      style={{ backgroundColor: '#E5B88A' }}
-    >
-      Refresh
-    </button>
-  </div>
-</div>
-<div className="mb-6 px-4 py-2 bg-white rounded-full text-center">
-  <span className="text-sm" style={{ color: '#666' }}>Code: </span>
-<span className="font-bold text-lg" style={{ color: '#3D3D3D' }}>{inviteId}</span>
-</div>
-
-<div className="space-y-3">
-  {invite.options.map((option, i) => {
-    const responses = getOptionResponses(i);
-    const hasResponses = responses.length > 0;
-    const isFinalized = invite.finalizedOption === i;
-    
-    return (
-      <div
-        key={i}
-        className="p-6 rounded-3xl relative"
-        style={{ 
-          backgroundColor: isFinalized ? '#C4BDAA' : hasResponses ? '#C4BDAA' : '#D9D9D9',
-          border: isFinalized ? '3px solid #F4E96D' : 'none'
-        }}
-      >
-        {isFinalized && (
-          <div className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold" style={{ backgroundColor: '#F4E96D' }}>
-            FINAL
+          <h2 className="text-5xl font-bold" style={{ color: '#3D3D3D' }}>
+            {isComplete ? "Let's go!" : totalResponses === 0 ? "Waiting..." : "Groops"}
+          </h2>
+          <div className="flex gap-2">
+            <button
+              onClick={() => {
+                setInviteData({
+                  title: invite.title,
+                  options: invite.options,
+                  hasGuestLimit: invite.hasGuestLimit,
+                  guestLimit: invite.guestLimit
+                });
+                setScreen('create');
+              }}
+              className="px-4 py-2 rounded-full text-sm font-medium"
+              style={{ backgroundColor: '#F4E96D' }}
+            >
+              Edit
+            </button>
+            <button
+              onClick={refreshDashboard}
+              className="px-4 py-2 rounded-full text-sm font-medium"
+              style={{ backgroundColor: '#E5B88A' }}
+            >
+              Refresh
+            </button>
           </div>
-        )}
+        </div>
         
-        <h3 className="text-2xl font-bold mb-2" style={{ color: '#3D3D3D' }}>
-          {option.name}
-        </h3>
-        
-        {invite.hasGuestLimit && (
-          <div className="flex gap-1 mb-2">
-            {responses.map((response, idx) => (
+        <div className="mb-6 px-4 py-2 bg-white rounded-full text-center">
+          <span className="text-sm" style={{ color: '#666' }}>Code: </span>
+          <span className="font-bold text-lg" style={{ color: '#3D3D3D' }}>{inviteId}</span>
+        </div>
+
+        <div className="space-y-3">
+          {invite.options.map((option, i) => {
+            const responses = getOptionResponses(i);
+            const hasResponses = responses.length > 0;
+            const isFinalized = invite.finalizedOption === i;
+            
+            return (
               <div
-                key={idx}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                key={i}
+                className="p-6 rounded-3xl relative"
                 style={{ 
-                  backgroundColor: '#F4E96D',
-                  color: '#3D3D3D'
+                  backgroundColor: isFinalized ? '#C4BDAA' : hasResponses ? '#C4BDAA' : '#D9D9D9',
+                  border: isFinalized ? '3px solid #F4E96D' : 'none'
                 }}
-                title={`${response.name} - ${response.phone}`}
               >
-                {getInitials(response.name)}
+                {isFinalized && (
+                  <div className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold" style={{ backgroundColor: '#F4E96D' }}>
+                    FINAL
+                  </div>
+                )}
+                
+                <h3 className="text-2xl font-bold mb-2" style={{ color: '#3D3D3D' }}>
+                  {option.name}
+                </h3>
+                
+                {invite.hasGuestLimit && (
+                  <div className="flex gap-1 mb-2">
+                    {responses.map((response, idx) => (
+                      <div
+                        key={idx}
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                        style={{ 
+                          backgroundColor: '#F4E96D',
+                          color: '#3D3D3D'
+                        }}
+                        title={`${response.name} - ${response.phone}`}
+                      >
+                        {getInitials(response.name)}
+                      </div>
+                    ))}
+                    {[...Array(Math.max(0, invite.guestLimit - responses.length))].map((_, idx) => (
+                      <div
+                        key={`empty-${idx}`}
+                        className="w-8 h-8 rounded-full"
+                        style={{ backgroundColor: 'rgba(255,255,255,0.3)' }}
+                      />
+                    ))}
+                  </div>
+                )}
+                
+                <div className="flex justify-between items-center">
+                  <span className="text-lg" style={{ color: '#3D3D3D' }}>
+                    {new Date(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+                  </span>
+                  <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
+                    {formatTime(option.time)}
+                  </span>
+                </div>
+
+                {!invite.hasGuestLimit && responses.length > 0 && (
+                  <div className="mt-3 pt-3 border-t border-gray-400">
+                    <p className="text-sm font-medium mb-2">RSVPs:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {responses.map((response, idx) => (
+                        <div
+                          key={idx}
+                          className="px-3 py-1 rounded-full text-xs"
+                          style={{ backgroundColor: '#F4E96D' }}
+                          title={response.phone}
+                        >
+                          {response.name}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {!isFinalized && responses.length > 0 && invite.finalizedOption === null && (
+                  <button
+                    onClick={() => {
+                      if (window.confirm(`Finalize "${option.name}"? This will set it as the final event.`)) {
+                        finalizeEvent(i);
+                      }
+                    }}
+                    className="w-full mt-3 py-2 rounded-full text-sm font-medium"
+                    style={{ backgroundColor: '#F4E96D' }}
+                  >
+                    Finalize This Option
+                  </button>
+                )}
+                
+                {isFinalized && (
+                  
+                    href={generateCalendarLink(option)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full mt-3 py-2 rounded-full text-sm font-medium text-center"
+                    style={{ backgroundColor: '#F4E96D' }}
+                  >
+                    Add to Google Calendar
+                  </a>
+                )}
               </div>
-            ))}
-            {[...Array(Math.max(0, invite.guestLimit - responses.length))].map((_, idx) => (
-              <div
-                key={`empty-${idx}`}
-                className="w-8 h-8 rounded-full"
-                style={{ backgroundColor: 'rgba(255,255,255,0.3)' }}
-              />
-            ))}
-          </div>
-        )}
-        
-        <div className="flex justify-between items-center">
-          <span className="text-lg" style={{ color: '#3D3D3D' }}>
-            {new Date(option.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
-          </span>
-          <span className="px-3 py-1 rounded-full text-sm" style={{ backgroundColor: '#5C5F52', color: 'white' }}>
-            {formatTime(option.time)}
-          </span>
+            );
+          })}
+
+          {/* Can't Make It section - same width as options */}
+          {invite.responses.filter(r => r.optionIndex === -1).length > 0 && (
+            <div className="p-6 rounded-3xl" style={{ backgroundColor: '#FFE5E5' }}>
+              <p className="text-sm font-bold mb-2" style={{ color: '#3D3D3D' }}>Can't Make It:</p>
+              <div className="flex flex-wrap gap-2">
+                {invite.responses.filter(r => r.optionIndex === -1).map((response, idx) => (
+                  <div
+                    key={idx}
+                    className="px-3 py-1 rounded-full text-xs"
+                    style={{ backgroundColor: '#FFB3B3', color: '#3D3D3D' }}
+                    title={response.phone}
+                  >
+                    {response.name}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
-       {!invite.hasGuestLimit && responses.length > 0 && (
-  <div className="mt-3 pt-3 border-t border-gray-400">
-    <p className="text-sm font-medium mb-2">RSVPs:</p>
-    <div className="flex flex-wrap gap-2">
-      {responses.map((response, idx) => (
-        <div
-          key={idx}
-          className="px-3 py-1 rounded-full text-xs"
-          style={{ backgroundColor: '#F4E96D' }}
-          title={response.phone}
-        >
-          {response.name}
-        </div>
-      ))}
-    </div>
-  </div>
-)}
-        
-        {!isFinalized && responses.length > 0 && invite.finalizedOption === null && (
+        <div className="flex gap-3 mt-6">
           <button
-            onClick={() => {
-              if (window.confirm(`Finalize "${option.name}"? This will set it as the final event.`)) {
-                finalizeEvent(i);
-              }
-            }}
-            className="w-full mt-3 py-2 rounded-full text-sm font-medium"
-            style={{ backgroundColor: '#F4E96D' }}
+            onClick={() => setScreen('home')}
+            className="flex-1 py-4 rounded-full font-medium"
+            style={{ backgroundColor: '#E5B88A' }}
           >
-            Finalize This Option
+            Home
           </button>
-        )}
-        
-        {isFinalized && (
-          <a
-            href={generateCalendarLink(option)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block w-full mt-3 py-2 rounded-full text-sm font-medium text-center"
-            style={{ backgroundColor: '#F4E96D' }}
+          <button
+            onClick={() => setScreen('share')}
+            className="flex-1 py-4 rounded-full font-medium"
+            style={{ backgroundColor: '#5C5F52', color: 'white' }}
           >
-            Add to Google Calendar
-          </a>
-        )}
-      </div>
-    );
-  })}
-</div>
-
-          <div className="flex gap-3 mt-6">
-  <button
-    onClick={() => setScreen('home')}
-    className="flex-1 py-4 rounded-full font-medium"
-    style={{ backgroundColor: '#E5B88A' }}
-  >
-    Home
-  </button>
- {/* Can't Make It section - MOVED OUTSIDE */}
-{invite.responses.filter(r => r.optionIndex === -1).length > 0 && (
-  <div className="mt-4 p-4 rounded-2xl" style={{ backgroundColor: '#FFE5E5' }}>
-    <p className="text-sm font-bold mb-2" style={{ color: '#3D3D3D' }}>Can't Make It:</p>
-    <div className="flex flex-wrap gap-2">
-      {invite.responses.filter(r => r.optionIndex === -1).map((response, idx) => (
-        <div
-          key={idx}
-          className="px-3 py-1 rounded-full text-xs"
-          style={{ backgroundColor: '#FFB3B3', color: '#3D3D3D' }}
-          title={response.phone}
-        >
-          {response.name}
+            Back to Share
+          </button>
         </div>
-      ))}
+      </div>
     </div>
-  </div>
-)}
-
-<div className="flex gap-3 mt-6">
-  <button
-    onClick={() => setScreen('home')}
-    className="flex-1 py-4 rounded-full font-medium"
-    style={{ backgroundColor: '#E5B88A' }}
-  >
-    Home
-  </button>
-  <button
-    onClick={() => setScreen('share')}
-    className="flex-1 py-4 rounded-full font-medium"
-    style={{ backgroundColor: '#5C5F52', color: 'white' }}
-  >
-    Back to Share
-  </button>
-</div>
-</div>
-        </div>
-      </div>
-    );
-  }
+  );
+}
 
   return null;
 }
