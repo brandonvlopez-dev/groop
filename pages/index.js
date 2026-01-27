@@ -170,8 +170,6 @@ const [loading, setLoading] = useState(false);
 const [finalizedOption, setFinalizedOption] = useState(null);
 const [showLoadInvite, setShowLoadInvite] = useState(false);
 const [loadInviteId, setLoadInviteId] = useState('');
-const [showLoadInvite, setShowLoadInvite] = useState(false);
-const [loadInviteId, setLoadInviteId] = useState('');
   
   useEffect(() => {
   if (screen === 'splash') {
