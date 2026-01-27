@@ -838,20 +838,22 @@ if (screen === 'rsvp' && invite) {
         <div className="space-y-3">
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Name *"
             value={rsvpForm.name}
             onChange={(e) => setRsvpForm({ ...rsvpForm, name: e.target.value })}
             disabled={invite.finalizedOption !== null}
+            required
             className="w-full px-6 py-4 rounded-full font-medium outline-none"
             style={{ backgroundColor: '#E5B88A', opacity: invite.finalizedOption !== null ? 0.5 : 1 }}
           />
           <input
             type="tel"
-            placeholder="Phone"
+            placeholder="Phone *"
             value={rsvpForm.phone}
             onChange={(e) => setRsvpForm({ ...rsvpForm, phone: e.target.value })}
             onBlur={checkExistingRsvp}
             disabled={invite.finalizedOption !== null}
+            required
             className="w-full px-6 py-4 rounded-full font-medium outline-none"
             style={{ backgroundColor: '#E5B88A', opacity: invite.finalizedOption !== null ? 0.5 : 1 }}
           />
