@@ -1037,6 +1037,16 @@ if (screen === 'dashboard' && invite) {
   >
     Add to Google Calendar
   </a>
+<button
+                      onClick={shareFinalPlan}
+                      className="w-full mt-2 py-2 rounded-full text-sm font-medium flex items-center justify-center gap-2"
+                      style={{ backgroundColor: '#E5B88A' }}
+                    >
+                      <MessageSquare size={16} />
+                      Share Plan with Group
+                    </button>
+                  </>
+                )}
 )}
               </div>
             );
