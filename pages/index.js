@@ -788,33 +788,59 @@ if (screen === 'home') {
             })}
           </div>
 
-          <div className="space-y-3">
-            <input
-              type="text"
-              placeholder="Name"
-              value={rsvpForm.name}
-              onChange={(e) => setRsvpForm({ ...rsvpForm, name: e.target.value })}
-              className="w-full px-6 py-4 rounded-full font-medium outline-none"
-              style={{ backgroundColor: '#E5B88A' }}
-            />
-            <input
-              type="tel"
-              placeholder="Phone"
-              value={rsvpForm.phone}
-              onChange={(e) => setRsvpForm({ ...rsvpForm, phone: e.target.value })}
-              onBlur={checkExistingRsvp}
-              className="w-full px-6 py-4 rounded-full font-medium outline-none"
-              style={{ backgroundColor: '#E5B88A' }}
-            />
-            <button
-              onClick={submitRsvp}
-              disabled={!rsvpForm.name || !rsvpForm.phone || selectedOption === null || (isCapacityReached() && !existingRsvp)}
-              className="w-full py-4 rounded-full font-medium disabled:opacity-50"
-              style={{ backgroundColor: '#F4E96D' }}
-            >
-              Submit
-            </button>
-          </div>
+         <div className="space-y-3">
+  <input
+    type="text"
+    placeholder="Name"
+    value={rsvpForm.name}
+    onChange={(e) => setRsvpForm({ ...rsvpForm, name: e.target.value })}
+    className="w-full px-6 py-4 rounded-full font-medium outline-none"
+    style={{ backgroundColor: '#E5B88A' }}
+  />
+  <input
+    type="tel"
+    placeholder="Phone"
+    value={rsvpForm.phone}
+    onChange={(e) => setRsvpForm({ ...rsvpForm, phone: e.target.value })}
+    onBlur={checkExistingRsvp}
+    className="w-full px-6 py-4 rounded-full font-medium outline-none"
+    style={{ backgroundColor: '#E5B88A' }}
+  />
+  <button
+    onClick={submitRsvp}
+    disabled={!rsvpForm.name || !rsvpForm.phone || selectedOption === null || (isCapacityReached() && !existingRsvp)}
+    className="w-full py-4 rounded-full font-medium disabled:opacity-50"
+    style={{ backgroundColor: '#F4E96D' }}
+  >
+    Submit
+  </button>
+  <button
+    onClick={async () => {
+      if (!rsvpForm.name || !rsvpForm.phone) {
+        alert('Please enter your name and phone number');
+        return;
+      }
+      setLoading(true);
+      const response = {
+        name: rsvpForm.name,
+        phone: rsvpForm.phone,
+        optionIndex: -1,
+        timestamp: Date.now()
+      };
+      const success = await firebaseService.addResponse(inviteId, response);
+      if (success) {
+        await loadInvite(inviteId);
+        setScreen('confirmation');
+      }
+      setLoading(false);
+    }}
+    disabled={!rsvpForm.name || !rsvpForm.phone}
+    className="w-full py-4 rounded-full font-medium disabled:opacity-50"
+    style={{ backgroundColor: '#D9D9D9' }}
+  >
+    I Can't Make It
+  </button>
+</div>
         </div>
       </div>
     );
