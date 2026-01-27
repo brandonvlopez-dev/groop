@@ -259,26 +259,24 @@ const [loadInviteId, setLoadInviteId] = useState('');
     }
   };
 
-  const submitRsvp = async () => {
-    if (rsvpForm.name && rsvpForm.phone && selectedOption !== null) {
-      setLoading(true);
-      const response = {
-        name: rsvpForm.name,
-        phone: rsvpForm.phone,
-        optionIndex: selectedOption,
-        timestamp: Date.now()
-      };
-      
-      const success = await firebaseService.addResponse(inviteId, response);
-      if (success) {
-        setScreen('confirmation');
-        setTimeout(async () => {
-          await loadInvite(inviteId);
-        }, 2000);
-      }
-      setLoading(false);
+ const submitRsvp = async () => {
+  if (rsvpForm.name && rsvpForm.phone && selectedOption !== null) {
+    setLoading(true);
+    const response = {
+      name: rsvpForm.name,
+      phone: rsvpForm.phone,
+      optionIndex: selectedOption,
+      timestamp: Date.now()
+    };
+    
+    const success = await firebaseService.addResponse(inviteId, response);
+    if (success) {
+      await loadInvite(inviteId);
+      setScreen('confirmation');
     }
-  };
+    setLoading(false);
+  }
+};
 
   const getInitials = (name) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
